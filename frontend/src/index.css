@@ -33,4 +33,31 @@
     @apply w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary 
            focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-200;
   }
+
+  /* Efek hover untuk semua tombol */
+.btn-hover-glow {
+  @apply transition-all duration-300;
+}
+
+.btn-hover-glow:hover {
+  @apply shadow-lg shadow-blue-500/30 scale-[1.02];
+}
+
+.btn-hover-glow:hover svg {
+  @apply translate-x-1 scale-110;
+}
+
+/* Atau pakai Tailwind utilities */
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  transform: scale(1.02);
+}
+
+.hover-glow:hover svg {
+  transform: translateX(4px) scale(1.1);
+}
 }

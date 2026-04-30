@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
-const { sequelize } = require('./models');
+const { sequelize, Product } = require('./models');
 
 dotenv.config();
 
@@ -23,32 +23,13 @@ app.use('/api', require('./routes/detect'));
 app.use('/api', require('./routes/history'));
 app.use('/api', require('./routes/products'));
 
-// Error handling middleware
+// Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Terjadi kesalahan pada server!' });
 });
 
-// Sync database dan start server
-const PORT = process.env.PORT || 5000;
-
-sequelize.sync({ alter: true }).then(async () => {
-  console.log('Database connected');
-  
-  // Seed data produk skincare
-  const { Product } = require('./models');
-  const count = await Product.count();
-  if (count === 0) {
-    await Product.bulkCreate(seedProducts);
-    console.log('Seed products added');
-  }
-  
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-});
-
-// Seed data
+// Seed data produk skincare
 const seedProducts = [
   {
     name: "Salicylic Acid 2% Serum",
@@ -56,9 +37,9 @@ const seedProducts = [
     category: "Treatment",
     acneType: "Comedonal",
     severity: "Mild",
-    description: "Membantu membersihkan pori-pori dan mengurangi komedo. Efektif untuk komedo putih dan komedo hitam.",
+    description: "Membantu membersihkan pori-pori dan mengurangi komedo.",
     ingredients: "Salicylic Acid 2%, Witch Hazel, Rose Water",
-    howToUse: "Gunakan pagi atau malam setelah cleanser. Aplikasikan 2-3 tetes ke area bermasalah.",
+    howToUse: "Gunakan pagi atau malam setelah cleanser.",
     price: 150000,
     imageUrl: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=300",
     rating: 4.5
@@ -69,9 +50,9 @@ const seedProducts = [
     category: "Treatment",
     acneType: "Inflammatory",
     severity: "Moderate",
-    description: "Mengurangi peradangan, kemerahan, dan memperkuat skin barrier.",
+    description: "Mengurangi peradangan dan kemerahan akibat jerawat.",
     ingredients: "Niacinamide 10%, Zinc PCA 1%",
-    howToUse: "Gunakan pagi dan malam setelah serum/toner.",
+    howToUse: "Gunakan pagi dan malam setelah serum.",
     price: 120000,
     imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=300",
     rating: 4.7
@@ -82,9 +63,9 @@ const seedProducts = [
     category: "Treatment",
     acneType: "Cystic",
     severity: "Severe",
-    description: "Membantu mengatasi jerawat kistik, mempercepat regenerasi sel, dan mengurangi bekas jerawat.",
+    description: "Membantu mengatasi jerawat kistik dan bekas jerawat.",
     ingredients: "Retinol 0.5%, Squalane, Vitamin E",
-    howToUse: "Gunakan malam hari, mulai 2x seminggu, tingkatkan frekuensi secara bertahap.",
+    howToUse: "Gunakan malam hari, mulai 2x seminggu.",
     price: 180000,
     imageUrl: "https://images.unsplash.com/photo-1596462502278-27bfdc403b8d?w=300",
     rating: 4.3
@@ -95,9 +76,9 @@ const seedProducts = [
     category: "Cleanser",
     acneType: "Hormonal",
     severity: "Mild",
-    description: "Membersihkan tanpa menghilangkan kelembaban alami kulit. Cocok untuk kulit sensitif.",
+    description: "Membersihkan tanpa menghilangkan kelembaban alami kulit.",
     ingredients: "Water, Cetyl Alcohol, Propylene Glycol, Panthenol",
-    howToUse: "Gunakan pagi dan malam. Pijat lembut ke kulit basah, lalu bilas.",
+    howToUse: "Gunakan pagi dan malam. Pijat lembut lalu bilas.",
     price: 95000,
     imageUrl: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=300",
     rating: 4.6
@@ -108,9 +89,9 @@ const seedProducts = [
     category: "Toner",
     acneType: "Inflammatory",
     severity: "Mild",
-    description: "Menenangkan kulit berjerawat dan meradang. Mengandung 100% Centella Asiatica.",
+    description: "Menenangkan kulit berjerawat dan meradang.",
     ingredients: "Centella Asiatica Extract, PHA, Madecassoside",
-    howToUse: "Gunakan setelah cleanser. Tuang ke kapas atau tangan, tepuk-tepuk ke wajah.",
+    howToUse: "Gunakan setelah cleanser. Tepuk-tepuk ke wajah.",
     price: 135000,
     imageUrl: "https://images.unsplash.com/photo-1617897903246-719242758050?w=300",
     rating: 4.8
@@ -121,9 +102,9 @@ const seedProducts = [
     category: "Treatment",
     acneType: "Hormonal",
     severity: "Moderate",
-    description: "Mengatasi jerawat hormonal, bekas jerawat, dan kemerahan.",
-    ingredients: "Azelaic Acid 10%, Vitamin C, Silicone",
-    howToUse: "Gunakan pagi atau malam setelah serum. Aplikasikan tipis-tipis.",
+    description: "Mengatasi jerawat hormonal dan bekas jerawat.",
+    ingredients: "Azelaic Acid 10%, Vitamin C",
+    howToUse: "Gunakan pagi atau malam setelah serum.",
     price: 160000,
     imageUrl: "https://images.unsplash.com/photo-1620916566390-22f5e5f846e7?w=300",
     rating: 4.4
@@ -134,7 +115,7 @@ const seedProducts = [
     category: "Moisturizer",
     acneType: "Comedonal",
     severity: "Mild",
-    description: "Melembabkan tanpa menyumbat pori-pori. Formula oil-free dan non-comedogenic.",
+    description: "Melembabkan tanpa menyumbat pori-pori.",
     ingredients: "Glycerin, Hyaluronic Acid, Dimethicone",
     howToUse: "Gunakan pagi dan malam setelah treatment.",
     price: 85000,
@@ -147,11 +128,68 @@ const seedProducts = [
     category: "Treatment",
     acneType: "Cystic",
     severity: "Severe",
-    description: "Membunuh bakteri penyebab jerawat dan mengeringkan jerawat kistik.",
+    description: "Membunuh bakteri penyebab jerawat.",
     ingredients: "Benzoyl Peroxide 5%, Aloe Vera",
-    howToUse: "Gunakan 1x sehari malam hari. Hindari area mata dan bibir.",
+    howToUse: "Gunakan 1x sehari malam hari.",
     price: 110000,
     imageUrl: "https://images.unsplash.com/photo-1581091870622-1c9a7bb4c1e8?w=300",
     rating: 4.2
+  },
+  {
+    name: "Tea Tree Oil Spot Treatment",
+    brand: "The Body Shop",
+    category: "Treatment",
+    acneType: "Inflammatory",
+    severity: "Moderate",
+    description: "Spot treatment untuk mengeringkan jerawat meradang.",
+    ingredients: "Tea Tree Oil, Lemon Oil",
+    howToUse: "Oleskan tipis-tipis pada jerawat 2x sehari.",
+    price: 75000,
+    imageUrl: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=300",
+    rating: 4.3
+  },
+  {
+    name: "Hyaluronic Acid 2% + B5",
+    brand: "The Ordinary",
+    category: "Moisturizer",
+    acneType: "Comedonal",
+    severity: "Mild",
+    description: "Menghidrasi kulit tanpa menyumbat pori-pori.",
+    ingredients: "Hyaluronic Acid 2%, Vitamin B5",
+    howToUse: "Gunakan pagi dan malam sebelum moisturizer.",
+    price: 130000,
+    imageUrl: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=300",
+    rating: 4.6
   }
 ];
+
+// Start server
+const PORT = process.env.PORT || 5000;
+
+sequelize.authenticate()
+  .then(() => {
+    console.log('✅ PostgreSQL connection established successfully');
+    return sequelize.sync({ alter: true });
+  })
+  .then(async () => {
+    console.log('✅ Database synced');
+    
+    // Cek apakah sudah ada data produk
+    const count = await Product.count();
+    if (count === 0) {
+      await Product.bulkCreate(seedProducts);
+      console.log(`✅ ${seedProducts.length} products seeded to database`);
+    } else {
+      console.log(`✅ Database already has ${count} products`);
+    }
+    
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`📁 API: http://localhost:${PORT}/api`);
+      console.log(`🐘 PostgreSQL: ${process.env.DB_NAME} on ${process.env.DB_HOST}`);
+    });
+  })
+  .catch(err => {
+    console.error('❌ Unable to connect to PostgreSQL:', err);
+    process.exit(1);
+  });

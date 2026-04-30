@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Detection', {
+  const Detection = sequelize.define('Detection', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -7,23 +7,35 @@ module.exports = (sequelize, DataTypes) => {
     },
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      field: 'user_id',
+      references: {
+        model: 'users',
+        key: 'id'
+      }
     },
     imageUrl: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      field: 'image_url'
     },
     acneType: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      field: 'acne_type'
     },
     severity: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(20),
       allowNull: false
     },
     confidence: {
       type: DataTypes.FLOAT,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        min: 0,
+        max: 1
+      }
     },
     recommendations: {
       type: DataTypes.TEXT,
@@ -37,6 +49,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     tableName: 'detections',
-    timestamps: true
+    timestamps: true,
+    underscored: true
   });
+
+  return Detection;
 };

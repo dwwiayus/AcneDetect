@@ -52,12 +52,8 @@ function App() {
         <Route path="/" element={<Landing isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register onLogin={handleLogin} />} />
-        <Route path="/detect" element={
-          isLoggedIn ? <Detect userId={userId} /> : <Navigate to="/login" />
-        } />
-        <Route path="/result/:detectionId" element={
-          isLoggedIn ? <Result userId={userId} /> : <Navigate to="/login" />
-        } />
+        <Route path="/detect" element={<Detect />} />
+        <Route path="/result" element={<Result />} />
         <Route path="/history" element={
           isLoggedIn ? <History userId={userId} /> : <Navigate to="/login" />
         } />
