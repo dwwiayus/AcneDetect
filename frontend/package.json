@@ -9,13 +9,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "axios": "^1.15.0",
+    "browser-image-compression": "^2.0.2",
     "lucide-react": "^0.294.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.4.1",
+    "react-hook-form": "^7.73.1",
     "react-hot-toast": "^2.6.0",
-    "react-router-dom": "^6.30.3"
+    "react-loading-skeleton": "^3.5.0",
+    "react-router-dom": "^6.30.3",
+    "zod": "^4.3.6",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
@@ -27,3 +33,4 @@
     "vite": "^5.0.0"
   }
 }
+
