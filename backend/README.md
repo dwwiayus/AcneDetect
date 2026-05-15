@@ -6,13 +6,13 @@ REST API untuk aplikasi AcneDetect, dibangun dengan **Express.js** dan **Postgre
 
 ### 1. Clone & Install Dependencies
 ```bash
-cd acnedetect-backend
+cd backend
 npm install
 ```
 
 ### 2. Setup Environment
 ```bash
-cp .env.example .env
+cp .env.example .env (sudah ada .env real)
 # Edit .env dengan konfigurasi PostgreSQL kamu
 ```
 
