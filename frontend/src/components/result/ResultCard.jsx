@@ -2,7 +2,6 @@ import React from 'react'
 import SeverityBadge from './SeverityBadge'
 
 const ResultCard = ({ imageUrl, severity, acneCount, areas }) => {
-  // Gunakan base URL dari environment atau default localhost
   const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
   
   let fullImageUrl = imageUrl

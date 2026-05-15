@@ -49,6 +49,7 @@ const createTables = async () => {
       )
     `)
 
+    // contact us
     await client.query(`
       CREATE TABLE IF NOT EXISTS contact_us (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
