@@ -1,52 +1,72 @@
 import React from 'react'
-import SeverityBadge from './SeverityBadge'
 
-const ResultCard = ({ imageUrl, severity, acneCount, areas }) => {
+const ResultCard = ({ imageUrl, severity, severityDescription, confidence }) => {
   const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
-  
-  let fullImageUrl = imageUrl
-  if (imageUrl && !imageUrl.startsWith('http')) {
-    fullImageUrl = `${BASE_URL}${imageUrl}`
+
+  const fullImageUrl =
+    imageUrl?.startsWith('http') || imageUrl?.startsWith('data:')
+      ? imageUrl
+      : `${BASE_URL}${imageUrl}`
+
+  const getBadgeColor = (sev) => {
+    if (sev === 'Mild' || sev?.includes('0')) return 'bg-green-100 text-green-700'
+    if (sev === 'Moderate' || sev?.includes('2')) return 'bg-yellow-100 text-yellow-700'
+    if (sev?.includes('1')) return 'bg-blue-100 text-blue-700'
+    return 'bg-red-100 text-red-700'
   }
-  
-  console.log('Original imageUrl:', imageUrl)
-  console.log('Full imageUrl:', fullImageUrl)
+
+  const confidenceValue = parseFloat(confidence) || 0
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+    <div className="card-yellow shadow-sm overflow-hidden">
       <div className="relative">
-        <img 
-          src={fullImageUrl} 
-          alt="Hasil deteksi" 
+        <img
+          src={fullImageUrl}
+          alt="Hasil deteksi"
           className="w-full h-64 object-cover"
           onError={(e) => {
-            console.error('Gambar gagal dimuat:', fullImageUrl)
-            e.target.src = 'https://via.placeholder.com/400x300?text=Gambar+Tidak+Tersedia'
+            e.target.src =
+              'https://via.placeholder.com/400x300?text=Foto+Tidak+Tersedia'
           }}
-          onLoad={() => console.log('Gambar berhasil dimuat:', fullImageUrl)}
         />
+
         <div className="absolute top-4 right-4">
-          <SeverityBadge severity={severity} />
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          {areas && areas.map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-3 h-3 bg-red-500 rounded-full animate-pulse"
-              style={{
-                top: `${30 + Math.random() * 40}%`,
-                left: `${20 + Math.random() * 60}%`,
-              }}
-            />
-          ))}
+          <span
+            className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${getBadgeColor(
+              severity
+            )}`}
+          >
+            {severity}
+          </span>
         </div>
       </div>
+
       <div className="p-5">
-        <h3 className="text-sm font-semibold text-text mb-1">Hasil Deteksi</h3>
-        <p className="text-text-muted text-xs">
-          Ditemukan <span className="font-semibold text-teal">{acneCount || 0}</span> jerawat pada{' '}
-          <span className="font-semibold text-teal">{areas?.join(', ') || '-'}</span>
+        <h3 className="text-lg font-semibold text-text mb-2">Hasil Deteksi</h3>
+
+        <p className="text-text-muted text-sm leading-relaxed">
+          {severityDescription}
         </p>
+
+        {confidenceValue > 0 && (
+          <div className="mt-3 pt-3 border-t border-gray-100">
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-teal rounded-full transition-all duration-500"
+                  style={{ width: `${confidenceValue}%` }}
+                />
+              </div>
+
+              <span className="text-xs font-medium text-teal">
+                {confidence}
+                {String(confidence).includes('%') ? '' : '%'}
+              </span>
+            </div>
+
+            <p className="text-tiny text-text-muted mt-1">Akurasi AI</p>
+          </div>
+        )}
       </div>
     </div>
   )

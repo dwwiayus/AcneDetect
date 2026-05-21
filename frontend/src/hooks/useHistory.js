@@ -11,9 +11,6 @@ export const useHistory = () => {
     setLoading(true)
     try {
       if (USE_MOCK) {
-        // Only seed mock data if historyList is completely empty (first run)
-        // Zustand persist already restores saved history from localStorage
-        // Do NOT overwrite existing data
         setLoading(false)
         return
       }
@@ -27,14 +24,24 @@ export const useHistory = () => {
   }, [setHistory])
 
   const saveResult = async () => {
-    if (!detectionResult) return
+    if (!detectionResult) {
+      toast.error('Tidak ada hasil deteksi')
+      return
+    }
+
+    if (!detectionResult.imageUrl) {
+      console.error('imageUrl missing:', detectionResult)
+      toast.error('URL gambar tidak ditemukan')
+      return
+    }
+
     const newRecord = {
       id: Date.now().toString(),
       imageUrl: detectionResult.imageUrl,
       date: new Date().toISOString(),
-      acneCount: detectionResult.acneCount,
       severity: detectionResult.severity,
-      areas: detectionResult.areas,
+      confidence: detectionResult.confidence,
+      products: detectionResult.products,
     }
 
     addToHistory(newRecord)
@@ -42,10 +49,16 @@ export const useHistory = () => {
 
     if (!USE_MOCK) {
       try {
-        await api.post('/api/history', detectionResult)
-      } catch {
+        await api.post('/api/history', {
+          imageUrl: detectionResult.imageUrl,
+          severity: detectionResult.severity,
+          confidence: detectionResult.confidence,
+          products: detectionResult.products,
+        })
+      } catch (error) {
         removeFromHistory(newRecord.id)
         toast.error('Gagal menyimpan riwayat')
+        console.error('Save error:', error.response?.data || error.message)
       }
     }
   }
@@ -56,7 +69,7 @@ export const useHistory = () => {
     if (!USE_MOCK) {
       try {
         await api.delete(`/api/history/${id}`)
-      } catch {
+      } catch (error) {
         toast.error('Gagal menghapus riwayat')
       }
     }
@@ -68,4 +81,3 @@ export const useHistory = () => {
 
   return { historyList, loading, fetchHistory, saveResult, deleteHistory }
 }
-

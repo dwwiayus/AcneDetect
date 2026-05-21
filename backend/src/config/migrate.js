@@ -49,6 +49,15 @@ const createTables = async () => {
       )
     `)
 
+    // Di dalam createTables(), setelah tabel detection_history dibuat, jalankan ALTER TABLE
+    await client.query(`
+      ALTER TABLE detection_history 
+      ADD COLUMN IF NOT EXISTS severity_level INTEGER DEFAULT 0,
+      ADD COLUMN IF NOT EXISTS severity_description TEXT,
+      ADD COLUMN IF NOT EXISTS confidence INTEGER DEFAULT 0,
+      ADD COLUMN IF NOT EXISTS skin_type VARCHAR(50)
+    `)
+
     // contact us
     await client.query(`
       CREATE TABLE IF NOT EXISTS contact_us (

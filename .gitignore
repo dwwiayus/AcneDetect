@@ -10,3 +10,12 @@ node_modules/
 .env
 __pycache__/
 *.pyc
+
+.env
+backend/.env
+frontend/.env
+venv/
+Acne-Vision/venv/
+node_modules/
+__pycache__/
+*.pyc

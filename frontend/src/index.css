@@ -18,3 +18,10 @@
   }
 }
 
+@layer components {
+  .card-yellow {
+    background: linear-gradient(135deg, #ffffff 88%, #eae38d 12%);
+    border: 1.5px solid rgba(234, 227, 141, 0.6);
+    border-radius: 16px;
+  }
+}

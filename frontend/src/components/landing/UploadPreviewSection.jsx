@@ -71,4 +71,3 @@ const UploadPreviewSection = () => {
 }
 
 export default UploadPreviewSection
-

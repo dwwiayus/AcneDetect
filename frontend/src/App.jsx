@@ -24,38 +24,30 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
-          <Route
-            path="/detect"
-            element={
-              <ProtectedRoute>
-                <UploadDetectPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/result"
-            element={
-              <ProtectedRoute>
-                <ResultPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/history"
-            element={
-              <ProtectedRoute>
-                <HistoryPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/history/:id"
-            element={
-              <ProtectedRoute>
-                <ResultPage />
-              </ProtectedRoute>
-            }
-          />
+          
+          <Route path="/detect" element={
+            <ProtectedRoute>
+              <UploadDetectPage />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/result" element={
+            <ProtectedRoute>
+              <ResultPage />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/history" element={
+            <ProtectedRoute>
+              <HistoryPage />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/history/:id" element={
+            <ProtectedRoute>
+              <ResultPage />
+            </ProtectedRoute>
+          } />
         </Routes>
       </Router>
     </ErrorBoundary>

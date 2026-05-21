@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const authMiddleware = require('../middleware/auth')
-const { getHistory, getHistoryById, saveHistory, deleteHistory } = require('../controllers/historyController')
+const { getHistory, saveHistory, deleteHistory } = require('../controllers/historyController')
 
+// Semua route history membutuhkan autentikasi
 router.use(authMiddleware)
 
 router.get('/', getHistory)
-router.get('/:id', getHistoryById)
 router.post('/', saveHistory)
 router.delete('/:id', deleteHistory)
 
