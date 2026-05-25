@@ -9,11 +9,13 @@ const HistoryCard = ({ item, onDelete }) => {
   const [showDelete, setShowDelete] = useState(false)
   const [imgError, setImgError] = useState(false)
 
-  const formattedDate = new Date(item.date).toLocaleDateString('id-ID', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
+  const formattedDate = item.date
+    ? new Date(item.date).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+    : '-'
 
   const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
@@ -22,17 +24,47 @@ const HistoryCard = ({ item, onDelete }) => {
       ? item.imageUrl
       : `${BASE_URL}${item.imageUrl}`
 
-  const levelLabel = item.acneLabel || item.severity || 'Hasil Deteksi'
   const skinType = item.skinType || item.jenis_kulit || '-'
+  const confidence = item.confidencePct || item.confidence || null
+  const label = item.acneLabel || item.severity || `Tingkat ${item.acneLevel || 0}`
+
+  const handleOpenDelete = (e) => {
+    e.stopPropagation()
+    setShowDelete(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    await onDelete(item.id)
+    setShowDelete(false)
+  }
 
   return (
     <>
       <div
         onClick={() => navigate(`/history/${item.id}`)}
-        className="group card-yellow p-4 shadow-sm flex gap-4 items-center cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+        className="
+          group relative overflow-hidden
+          bg-[#eefafa]
+          border border-[#b9d9d3]
+          rounded-[12px]
+          px-4 py-4
+          flex items-center gap-4
+          cursor-pointer
+          transition-all duration-300
+          hover:-translate-y-1 hover:shadow-md
+        "
       >
-        <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-gray-100 flex items-center justify-center">
-          {!imgError ? (
+        <div
+          className="
+            absolute right-0 top-0 h-full w-[110px]
+            bg-[#f2ec80]
+            [clip-path:polygon(85%_0,100%_0,100%_100%,0_100%)]
+            pointer-events-none
+          "
+        />
+
+        <div className="relative z-10 w-[60px] h-[60px] rounded-[10px] overflow-hidden shrink-0 bg-[#a8cecb] flex items-center justify-center">
+          {!imgError && item.imageUrl ? (
             <img
               src={fullImageUrl}
               alt="Riwayat deteksi"
@@ -40,47 +72,57 @@ const HistoryCard = ({ item, onDelete }) => {
               onError={() => setImgError(true)}
             />
           ) : (
-            <ImageIcon size={24} className="text-gray-400" />
+            <ImageIcon size={25} className="text-white/90" />
           )}
         </div>
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <SeverityBadge severity={item.severity || item.acneLabel} />
+        <div className="relative z-10 flex-1 min-w-0">
+          <div className="mb-2">
+            <SeverityBadge severity={label} />
+          </div>
 
-            <span className="text-text-muted text-tiny flex items-center gap-1">
+          <div className="flex items-center gap-3 flex-wrap text-[11px] text-[#5e7775]">
+            <span className="flex items-center gap-1">
               <Calendar size={12} />
               {formattedDate}
             </span>
+
+            <span>{skinType}</span>
+
+            {confidence && (
+              <span>
+                🎯 {typeof confidence === 'number' ? `${confidence}%` : confidence}
+              </span>
+            )}
           </div>
-
-          <p className="text-text text-sm font-semibold truncate">
-            {levelLabel}
-          </p>
-
-          <p className="text-text-muted text-xs mt-1">
-            Jenis kulit: {skinType}
-          </p>
         </div>
 
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            setShowDelete(true)
-          }}
-          className="text-red-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-full transition-all duration-200 hover:rotate-12 hover:scale-110 shrink-0"
-        >
-          <Trash2 size={18} />
-        </button>
+        <div className="relative z-20 flex items-center gap-3 shrink-0">
+          <button
+            type="button"
+            onClick={handleOpenDelete}
+            className="
+              flex items-center gap-1
+              bg-[#dff4f3]
+              text-[#26706d]
+              px-3 py-1.5
+              rounded-full
+              text-[12px] font-semibold
+              hover:bg-red-50
+              hover:text-red-500
+              transition
+            "
+          >
+            <Trash2 size={13} />
+            Hapus
+          </button>
+        </div>
       </div>
 
       {showDelete && (
         <DeleteHistoryModal
           onClose={() => setShowDelete(false)}
-          onConfirm={() => {
-            onDelete(item.id)
-            setShowDelete(false)
-          }}
+          onConfirm={handleConfirmDelete}
         />
       )}
     </>

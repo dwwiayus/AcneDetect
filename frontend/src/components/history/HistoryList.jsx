@@ -6,7 +6,7 @@ import ScrollReveal from '../shared/ScrollReveal'
 
 const HistoryList = ({ historyList, loading, onDelete }) => {
   if (loading) {
-    return <ListSkeleton count={4} />
+    return <ListSkeleton count={3} />
   }
 
   if (!historyList || historyList.length === 0) {
@@ -14,7 +14,7 @@ const HistoryList = ({ historyList, loading, onDelete }) => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-[13px]">
       {historyList.map((item, i) => (
         <ScrollReveal key={item.id} delay={i * 80}>
           <HistoryCard item={item} onDelete={onDelete} />
@@ -25,4 +25,3 @@ const HistoryList = ({ historyList, loading, onDelete }) => {
 }
 
 export default HistoryList
-

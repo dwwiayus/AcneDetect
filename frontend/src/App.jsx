@@ -11,6 +11,7 @@ import HistoryPage from './pages/HistoryPage'
 import ProductDetailPage from './pages/ProductDetailPage'
 import ContactPage from './pages/ContactPage'
 import AboutPage from './pages/AboutPage'
+import FavoritesPage from './pages/FavoritesPage'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
           
           <Route path="/detect" element={
             <ProtectedRoute>

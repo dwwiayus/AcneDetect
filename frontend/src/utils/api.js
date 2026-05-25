@@ -22,3 +22,27 @@ api.interceptors.request.use((config) => {
 })
 
 export const USE_MOCK = false
+
+export const saveHistory = (data) => {
+  return api.post('/api/history', data)
+}
+
+export const getHistory = () => {
+  return api.get('/api/history')
+}
+
+export const deleteHistory = (id) => {
+  return api.delete(`/api/history/${id}`)
+}
+
+export const getFavoriteProducts = () => {
+  return api.get('/api/favorites')
+}
+
+export const deleteFavoriteProduct = (id) => {
+  return api.delete(`/api/favorites/${id}`)
+}
+
+export const saveFavoriteProduct = (product) => {
+  return api.post('/api/favorites', { product })
+}

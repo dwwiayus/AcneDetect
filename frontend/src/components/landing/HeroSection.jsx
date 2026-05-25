@@ -1,35 +1,43 @@
 import React from 'react'
+import { ArrowRight } from 'lucide-react'
 
-const HeroSection = () => {
-  const scrollToUpload = () => {
-    const el = document.getElementById('upload-section')
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
-  }
-
+const HeroSection = ({ navigate }) => {
   return (
-    <section className="relative bg-gradient-to-br from-[#3c8b89] via-[#2d7a78] to-[#2a6360] text-white overflow-hidden">
-      <div className="absolute top-[-60px] right-[-60px] w-48 h-48 bg-white/10 rounded-full blur-2xl" />
-      <div className="absolute bottom-[-40px] left-[-40px] w-40 h-40 bg-yellow/20 rounded-full blur-xl" />
-      <div className="max-w-6xl mx-auto px-4 py-16 md:py-24 text-center relative z-10">
-        <h1 className="text-hero md:text-5xl font-bold mb-4 leading-tight text-yellow">
-          Deteksi Jerawat dengan AI Cerdas
-        </h1>
-        <p className="text-white/80 max-w-xl mx-auto mb-8 text-body md:text-base">
-          Unggah foto wajah Anda dan biarkan kecerdasan buatan kami menganalisis kondisi kulit Anda,
-          mendeteksi jerawat, dan memberikan rekomendasi skincare yang tepat.
-        </p>
-        <div className="flex justify-center">
-          <button
-            onClick={scrollToUpload}
-            className="bg-yellow text-text px-8 py-3 rounded-full font-semibold text-sm hover:bg-yellow-dark hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg"
-          >
-            Coba Sekarang
-          </button>
-        </div>
+    <div className="px-6 py-16 text-center">
+      <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-yellow bg-white/70 text-[#2a6360] text-xs font-semibold mb-5">
+        ✨ Powered by AI
       </div>
-    </section>
+
+      <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-5">
+        <span className="text-yellow">Deteksi Jerawat</span>
+        <br />
+        dengan AI Cerdas
+      </h1>
+
+      <p className="max-w-2xl mx-auto text-text-muted text-sm md:text-base mb-8">
+        Unggah foto wajah Anda dan biarkan AI kami menganalisis kondisi
+        kulit, mendeteksi jerawat, dan memberikan rekomendasi skincare yang
+        tepat.
+      </p>
+
+      <div className="flex flex-col sm:flex-row justify-center gap-4">
+        <button
+          onClick={() => navigate('/detect')}
+          className="inline-flex items-center justify-center gap-2 bg-teal text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-teal-dark transition"
+        >
+          Coba Sekarang
+          <ArrowRight size={18} />
+        </button>
+
+        <button
+          onClick={() => navigate('/about')}
+          className="inline-flex items-center justify-center border border-teal text-teal px-8 py-3 rounded-full font-semibold hover:bg-teal hover:text-white transition"
+        >
+          Pelajari Lebih
+        </button>
+      </div>
+    </div>
   )
 }
 
 export default HeroSection
-

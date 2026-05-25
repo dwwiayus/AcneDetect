@@ -2,211 +2,223 @@ import React from 'react'
 import Navbar from '../components/landing/Navbar'
 import Footer from '../components/landing/Footer'
 import PageTransition from '../components/shared/PageTransition'
-import ScrollReveal from '../components/shared/ScrollReveal'
-import {
-  Upload,
-  Brain,
-  Sparkles,
-  CheckCircle,
-  Users,
-  AlertTriangle,
-} from 'lucide-react'
+import { Upload, Clock, Star, CheckSquare, UserRound } from 'lucide-react'
 
 const steps = [
   {
     step: '1',
-    icon: <Upload size={24} />,
+    icon: <Upload size={21} />,
     title: 'Upload Foto',
-    desc: 'Unggah foto wajah Anda dengan kualitas yang jelas untuk analisis optimal.',
+    desc: 'Unggah foto wajah dengan kualitas baik untuk analisis optimal',
   },
   {
     step: '2',
-    icon: <Brain size={24} />,
+    icon: <Clock size={21} />,
     title: 'Analisis AI',
-    desc: 'Sistem AI kami akan mendeteksi dan menganalisis area jerawat pada wajah Anda.',
+    desc: 'CNN mendeteksi tingkat keparahan jerawat Level 0–3',
   },
   {
     step: '3',
-    icon: <Sparkles size={24} />,
+    icon: <Star size={21} />,
     title: 'Hasil Deteksi',
-    desc: 'Dapatkan informasi detail tentang jenis dan tingkat keparahan jerawat.',
+    desc: 'Dapatkan level, akurasi, dan deskripsi kondisi kulit',
   },
   {
     step: '4',
-    icon: <CheckCircle size={24} />,
+    icon: <CheckSquare size={21} />,
     title: 'Rekomendasi',
-    desc: 'Dapatkan rekomendasi skincare yang sesuai dengan kondisi kulit Anda.',
+    desc: 'Terima rekomendasi produk skincare terbaik',
   },
 ]
 
 const teamMembers = [
   {
     role: 'Full-Stack Developer',
-    desc: 'Mengembangkan aplikasi web dengan teknologi terbaru.',
+    desc: 'Mengembangkan aplikasi web dengan teknologi modern',
   },
   {
     role: 'Data Scientist',
-    desc: 'Membangun dan mengoptimalkan model AI untuk deteksi acne.',
+    desc: 'Membangun dan mengoptimasi model CNN untuk deteksi acne',
   },
   {
     role: 'AI Engineer',
-    desc: 'Merancang sistem machine learning yang akurat dan efisien.',
+    desc: 'Merancang sistem rekomendasi produk skincare machine learning',
   },
 ]
 
-const AboutPage = () => {
+const Panel = ({ children, className = '' }) => {
   return (
     <div
-      className="min-h-screen flex flex-col"
-      style={{
-        background:
-          'linear-gradient(to bottom, #3c8b89, #2a6360 120px, #f0f7f7 120px)',
-      }}
+      className={`
+        relative overflow-hidden
+        bg-[#fbfdfd]
+        border border-[#efe56f]
+        rounded-[15px]
+        shadow-sm
+        ${className}
+      `}
     >
+      <div
+        className="
+          absolute right-0 bottom-0
+          w-[95px] h-[95px]
+          bg-[#f2ec80]
+          [clip-path:polygon(100%_0,100%_100%,0_100%)]
+        "
+      />
+
+      <div className="relative z-10">{children}</div>
+    </div>
+  )
+}
+
+const SectionTitle = ({ title }) => {
+  return (
+    <div className="flex items-center gap-2 mb-4">
+      <span className="w-2 h-2 rounded-full bg-[#3a918d]" />
+      <h2 className="text-[14px] font-bold text-[#102c2b]">{title}</h2>
+    </div>
+  )
+}
+
+const AboutPage = () => {
+  return (
+    <div className="min-h-screen mesh-bg flex flex-col">
       <Navbar />
 
-      <PageTransition>
-        <div className="flex justify-center px-4 py-12">
-          <div style={{ width: '80%', maxWidth: '950px' }}>
-            <div className="card-yellow shadow-sm p-6 space-y-8">
-              <ScrollReveal>
-                <div className="text-center py-8">
-                  <h1 className="text-3xl md:text-4xl font-bold text-text mb-3">
-                    About Acne Detect
-                  </h1>
+      <main className="flex-1">
+        <PageTransition>
+          <section className="flex justify-center px-4 pt-8 pb-16">
+            <div className="w-full max-w-[633px] space-y-5">
+              <Panel className="px-8 py-8 text-center">
+                <h1 className="text-[25px] font-bold text-[#102c2b] mb-3">
+                  About AcneDetect
+                </h1>
 
-                  <p className="text-text-muted text-sm md:text-base max-w-2xl mx-auto">
-                    Platform deteksi acne cerdas yang membantu pengguna mengidentifikasi
-                    tingkat keparahan acne dan mendapatkan rekomendasi skincare yang tepat.
-                  </p>
-                </div>
-              </ScrollReveal>
+                <p className="text-[13px] leading-6 text-[#617273] max-w-[460px] mx-auto">
+                  Platform deteksi acne berbasis AI yang membantu pengguna
+                  mengidentifikasi tingkat keparahan jerawat Level 0–3 dan
+                  mendapatkan rekomendasi skincare yang sesuai dengan kondisi
+                  kulit.
+                </p>
+              </Panel>
 
-              <ScrollReveal delay={100}>
-                <div className="card-yellow p-6 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-                  <h2 className="text-section-title md:text-xl font-semibold text-text mb-4">
-                    Mengapa Kami Membangun Ini
-                  </h2>
+              <Panel className="px-6 py-5">
+                <SectionTitle title="Mengapa Kami Membangun Ini" />
 
-                  <p className="text-text-muted text-sm leading-relaxed">
-                    Acne merupakan masalah kulit yang sangat umum dan dapat mempengaruhi
-                    kepercayaan diri seseorang. Banyak orang kesulitan mengidentifikasi
-                    jenis acne dan memilih produk skincare yang tepat. Kami membangun
-                    platform ini untuk membantu pengguna memahami kondisi kulit mereka
-                    dengan lebih baik melalui teknologi AI yang akurat dan mudah digunakan.
-                  </p>
-                </div>
-              </ScrollReveal>
+                <p className="text-[12px] leading-6 text-[#617273]">
+                  Acne merupakan masalah kulit yang umum dialami banyak orang.
+                  Banyak pengguna kesulitan memahami tingkat keparahan jerawat
+                  dan memilih produk skincare yang sesuai. AcneDetect membantu
+                  proses tersebut dengan analisis AI dan rekomendasi skincare
+                  berdasarkan hasil deteksi.
+                </p>
+              </Panel>
 
-              <ScrollReveal delay={200}>
-                <div className="card-yellow p-6 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-                  <h2 className="text-section-title md:text-xl font-semibold text-text mb-4">
-                    Solusi Kami
-                  </h2>
+              <Panel className="px-6 py-5">
+                <SectionTitle title="Cara Kerja" />
 
-                  <p className="text-text-muted text-sm leading-relaxed">
-                    AcneDetect menggunakan model AI terkini untuk mendeteksi dan menganalisis
-                    acne pada wajah pengguna. Dengan mengunggah foto wajah, pengguna akan
-                    mendapatkan informasi detail tentang kondisi kulit dan rekomendasi produk
-                    skincare yang sesuai dengan jenis kulit mereka.
-                  </p>
-                </div>
-              </ScrollReveal>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                  {steps.map((item) => (
+                    <div
+                      key={item.step}
+                      className="
+                        relative overflow-hidden
+                        border border-[#efe56f]
+                        rounded-[12px]
+                        bg-white
+                        min-h-[175px]
+                        px-4 pt-7 pb-5
+                        text-center
+                      "
+                    >
+                      <div
+                        className="
+                          absolute right-0 bottom-0
+                          w-[54px] h-[54px]
+                          bg-[#f2ec80]
+                          [clip-path:polygon(100%_0,100%_100%,0_100%)]
+                        "
+                      />
 
-              <ScrollReveal delay={300}>
-                <div className="card-yellow p-6 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-                  <h2 className="text-section-title md:text-xl font-semibold text-text mb-6">
-                    Cara Kerja
-                  </h2>
+                      <div
+                        className="
+                          absolute top-0 right-0
+                          w-6 h-6 rounded-bl-full
+                          bg-[#3a918d]
+                          text-white text-[11px] font-bold
+                          flex items-center justify-center
+                          pl-1 pb-1
+                        "
+                      >
+                        {item.step}
+                      </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {steps.map((s, i) => (
-                      <div key={i} className="text-center">
-                        <div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center mx-auto mb-3">
-                          <span className="text-white font-bold">{s.step}</span>
+                      <div className="relative z-10">
+                        <div className="w-[44px] h-[44px] bg-[#3a918d] text-white rounded-[12px] flex items-center justify-center mx-auto mb-3">
+                          {item.icon}
                         </div>
 
-                        <div className="w-10 h-10 bg-teal-xlight rounded-full flex items-center justify-center mx-auto mb-3">
-                          <span className="text-teal">{s.icon}</span>
-                        </div>
-
-                        <h3 className="text-sm font-semibold text-text mb-2">
-                          {s.title}
+                        <h3 className="text-[12px] font-bold text-[#102c2b] mb-2">
+                          {item.title}
                         </h3>
 
-                        <p className="text-text-muted text-xs leading-relaxed">
-                          {s.desc}
+                        <p className="text-[10px] leading-4 text-[#8a999d]">
+                          {item.desc}
                         </p>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
-              </ScrollReveal>
+              </Panel>
 
-              <ScrollReveal delay={400}>
-                <div className="card-yellow p-6 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-                  <h2 className="text-section-title md:text-xl font-semibold text-text mb-6">
-                    Tim Kami
-                  </h2>
+              <Panel className="px-6 py-5">
+                <SectionTitle title="Tim Kami" />
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {teamMembers.map((member, i) => (
-                      <div key={i} className="text-center p-4 bg-bg rounded-xl">
-                        <div className="w-12 h-12 bg-teal-xlight rounded-full flex items-center justify-center mx-auto mb-3">
-                          <Users size={24} className="text-teal" />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+                  {teamMembers.map((member) => (
+                    <div
+                      key={member.role}
+                      className="
+                        relative overflow-hidden
+                        border border-[#efe56f]
+                        rounded-[12px]
+                        bg-white
+                        min-h-[145px]
+                        px-5 pt-5 pb-4
+                        text-center
+                      "
+                    >
+                      <div
+                        className="
+                          absolute right-0 bottom-0
+                          w-[54px] h-[54px]
+                          bg-[#f2ec80]
+                          [clip-path:polygon(100%_0,100%_100%,0_100%)]
+                        "
+                      />
+
+                      <div className="relative z-10">
+                        <div className="w-[50px] h-[50px] bg-[#e9f6f5] text-[#3a918d] rounded-[14px] flex items-center justify-center mx-auto mb-3">
+                          <UserRound size={22} />
                         </div>
 
-                        <h3 className="text-sm font-semibold text-text mb-2">
+                        <h3 className="text-[12px] font-bold text-[#102c2b] mb-2">
                           {member.role}
                         </h3>
 
-                        <p className="text-text-muted text-xs leading-relaxed">
+                        <p className="text-[10px] leading-4 text-[#8a999d]">
                           {member.desc}
                         </p>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </ScrollReveal>
-
-              <ScrollReveal delay={500}>
-                <div className="card-yellow p-6 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-                  <h2 className="text-section-title md:text-xl font-semibold text-text mb-4">
-                    Visi Kami
-                  </h2>
-
-                  <p className="text-text-muted text-sm leading-relaxed">
-                    Kami ingin menjadi platform perawatan kulit terpercaya yang membantu
-                    pengguna memahami dan mengatasi masalah acne mereka dengan lebih efektif.
-                    Dengan terus berkembangnya teknologi AI, kami berkomitmen untuk memberikan
-                    solusi yang semakin akurat dan personal bagi setiap pengguna.
-                  </p>
-                </div>
-              </ScrollReveal>
-
-              <ScrollReveal delay={600}>
-                <div className="bg-amber-50 border-l-4 border-amber-400 rounded-xl p-6">
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle size={24} className="text-amber-500 shrink-0" />
-
-                    <div>
-                      <h3 className="text-sm font-semibold text-amber-800 mb-2">
-                        Peringatan
-                      </h3>
-
-                      <p className="text-amber-700 text-xs leading-relaxed">
-                        Hasil deteksi yang diberikan oleh sistem ini hanya bersifat
-                        rekomendasi awal dan tidak dapat menggantikan konsultasi dengan
-                        dokter kulit atau ahli dermatologi.
-                      </p>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              </ScrollReveal>
+              </Panel>
             </div>
-          </div>
-        </div>
-      </PageTransition>
+          </section>
+        </PageTransition>
+      </main>
 
       <Footer />
     </div>

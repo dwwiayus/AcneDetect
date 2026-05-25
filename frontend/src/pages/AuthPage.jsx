@@ -17,38 +17,49 @@ const AuthPage = () => {
   return (
     <AuthLayout>
       <PageTransition>
-        <div className="text-center mb-6">
-          <h1 className="text-xl font-bold text-text mb-1">
-            {mode === 'login' ? 'Selamat Datang Kembali' : 'Buat Akun Baru'}
+        <div className="text-center mb-7">
+          <h1 className="text-[22px] font-bold text-[#102c2b] mb-1">
+            Acne <span className="text-[#3a918d]">Detect</span>
           </h1>
-          <p className="text-text-muted text-xs">
-            {mode === 'login'
-              ? 'Masuk untuk melanjutkan deteksi jerawat'
-              : 'Daftar untuk mulai menggunakan AcneDetect'}
+
+          <p className="text-[#9aa5b5] text-[12px]">
+            Smart acne detection platform
           </p>
+        </div>
+
+        <div className="bg-[#eef7f7] rounded-[11px] p-1 mb-6 grid grid-cols-2">
+          <Link
+            to="/login"
+            onClick={() => setMode('login')}
+            className={`
+              text-center py-2 rounded-[9px] text-[13px] font-bold transition-all
+              ${
+                mode === 'login'
+                  ? 'bg-white text-[#06423f] shadow-sm'
+                  : 'text-[#9aa5b5]'
+              }
+            `}
+          >
+            Masuk
+          </Link>
+
+          <Link
+            to="/register"
+            onClick={() => setMode('register')}
+            className={`
+              text-center py-2 rounded-[9px] text-[13px] font-bold transition-all
+              ${
+                mode === 'register'
+                  ? 'bg-white text-[#06423f] shadow-sm'
+                  : 'text-[#9aa5b5]'
+              }
+            `}
+          >
+            Daftar
+          </Link>
         </div>
 
         {mode === 'login' ? <LoginForm /> : <RegisterForm />}
-
-        <div className="mt-6 text-center">
-          <p className="text-text-muted text-xs">
-            {mode === 'login' ? (
-              <>
-                Belum punya akun?{' '}
-                <Link to="/register" onClick={() => setMode('register')} className="text-teal font-medium">
-                  Daftar
-                </Link>
-              </>
-            ) : (
-              <>
-                Sudah punya akun?{' '}
-                <Link to="/login" onClick={() => setMode('login')} className="text-teal font-medium">
-                  Masuk
-                </Link>
-              </>
-            )}
-          </p>
-        </div>
       </PageTransition>
     </AuthLayout>
   )

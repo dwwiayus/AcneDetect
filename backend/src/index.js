@@ -6,8 +6,8 @@ const path = require('path')
 const authRoutes = require('./routes/auth')
 const detectRoutes = require('./routes/detect')
 const historyRoutes = require('./routes/history')
-const productRoutes = require('./routes/products')
 const contactRoutes = require('./routes/contact')
+const favoriteRoutes = require('./routes/favorites')
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -27,9 +27,8 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
 app.use('/api/auth', authRoutes)
 app.use('/api/detect', detectRoutes)
 app.use('/api/history', historyRoutes)
-app.use('/api/products', productRoutes)
 app.use('/api/contact', contactRoutes)
-
+app.use('/api/favorites', favoriteRoutes)
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })

@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import {
+  Upload,
+  CheckCircle,
+  Droplet,
+  HeartPulse,
+  ArrowLeft,
+  Sparkles,
+  Zap,
+  Shield,
+  Wind,
+} from 'lucide-react'
 import Navbar from '../components/landing/Navbar'
 import Footer from '../components/landing/Footer'
 import ImagePreview from '../components/upload/ImagePreview'
@@ -8,47 +19,52 @@ import LoadingOverlay from '../components/upload/LoadingOverlay'
 import PageTransition from '../components/shared/PageTransition'
 import { useDetection } from '../hooks/useDetection'
 
-const NormalIcon = () => (
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-    <circle cx="20" cy="20" r="18" stroke="currentColor" strokeWidth="2" fill="none" />
-    <path d="M12 20l6 6 10-12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-)
-
-const BerminyakIcon = () => (
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-    <path d="M20 4 C20 4 8 18 8 26 C8 32.627 13.373 38 20 38 C26.627 38 32 32.627 32 26 C32 18 20 4 20 4Z" fill="currentColor" opacity="0.85" />
-    <path d="M14 28 C14 28 14 22 20 20" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-)
-
-const KeringIcon = () => (
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-    <path d="M20 4 C20 4 8 18 8 26 C8 32.627 13.373 38 20 38 C26.627 38 32 32.627 32 26 C32 18 20 4 20 4Z" stroke="currentColor" strokeWidth="2" fill="none" />
-    <path d="M26 26 C26 22.686 23.314 20 20 20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-)
-
-const KombinasiIcon = () => (
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-    <path d="M14 5 C14 5 6 15 6 21 C6 25.418 9.582 29 14 29 C18.418 29 22 25.418 22 21 C22 15 14 5 14 5Z" fill="currentColor" opacity="0.7" />
-    <path d="M26 10 C26 10 18 20 18 26 C18 30.418 21.582 34 26 34 C30.418 34 34 30.418 34 26 C34 20 26 10 26 10Z" stroke="currentColor" strokeWidth="1.8" fill="none" />
-  </svg>
-)
-
-const SensitifIcon = () => (
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-    <path d="M20 34 L8 22 C5 19 5 14 8 11 C11 8 16 8 19 11 L20 12 L21 11 C24 8 29 8 32 11 C35 14 35 19 32 22 Z" fill="currentColor" opacity="0.8" />
-    <path d="M10 21 L13 16 L16 22 L19 18 L22 24 L25 20 L28 21" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-)
-
 const skinTypeOptions = [
-  { label: 'Berminyak', Icon: BerminyakIcon },
-  { label: 'Kering', Icon: KeringIcon },
-  { label: 'Normal', Icon: NormalIcon },
-  { label: 'Kombinasi', Icon: KombinasiIcon },
-  { label: 'Sensitif', Icon: SensitifIcon },
+  {
+    label: 'Normal',
+    Icon: CheckCircle,
+    iconBg: 'bg-emerald-100',
+    iconColor: 'text-emerald-600',
+    borderColor: 'border-emerald-200',
+    activeBg: 'bg-emerald-50',
+    description: 'Kulit seimbang, tidak terlalu berminyak atau kering',
+  },
+  {
+    label: 'Berminyak',
+    Icon: Droplet,
+    iconBg: 'bg-blue-100',
+    iconColor: 'text-blue-600',
+    borderColor: 'border-blue-200',
+    activeBg: 'bg-blue-50',
+    description: 'Produksi minyak berlebih, pori-pori terlihat',
+  },
+  {
+    label: 'Kering',
+    Icon: Wind,  // ← DIUBAH: pakai Wind untuk kulit kering
+    iconBg: 'bg-sky-100',
+    iconColor: 'text-sky-600',
+    borderColor: 'border-sky-200',
+    activeBg: 'bg-sky-50',
+    description: 'Kulit terasa kaku, bersisik, atau kasar',
+  },
+  {
+    label: 'Kombinasi',
+    Icon: Sparkles,
+    iconBg: 'bg-purple-100',
+    iconColor: 'text-purple-600',
+    borderColor: 'border-purple-200',
+    activeBg: 'bg-purple-50',
+    description: 'Area T-zone berminyak, pipi normal/kering',
+  },
+  {
+    label: 'Sensitif',
+    Icon: HeartPulse,
+    iconBg: 'bg-rose-100',
+    iconColor: 'text-rose-600',
+    borderColor: 'border-rose-200',
+    activeBg: 'bg-rose-50',
+    description: 'Mudah kemerahan, gatal, atau iritasi',
+  },
 ]
 
 const UploadDetectPage = () => {
@@ -64,6 +80,12 @@ const UploadDetectPage = () => {
     }
   }, [location])
 
+  const handleFileChange = (e) => {
+    const selected = e.target.files?.[0]
+    if (!selected) return
+    setFile(selected)
+  }
+
   const handleDetect = async () => {
     if (!file) return
 
@@ -75,71 +97,156 @@ const UploadDetectPage = () => {
     }
   }
 
+  const getActiveSkinOption = () => {
+    return skinTypeOptions.find(opt => opt.label === skinType)
+  }
+
+  const activeOption = getActiveSkinOption()
+
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{
-        background: 'linear-gradient(to bottom, #3c8b89, #2a6360 120px, #f0f7f7 120px)',
-      }}
-    >
+    <div className="min-h-screen mesh-bg flex flex-col">
       <Navbar />
 
       <main className="flex-1">
         <PageTransition>
-          <div className="flex justify-center px-4 py-8">
-            <div className="w-full max-w-2xl">
-              <div className="card-yellow shadow-sm p-6">
-                <h1 className="text-xl font-semibold text-text text-center mb-2">
+          <div className="max-w-4xl mx-auto px-4 py-10">
+            <button
+              onClick={() => navigate('/')}
+              className="flex items-center gap-2 text-white/80 text-sm mb-6 hover:text-white transition group"
+            >
+              <ArrowLeft size={16} className="group-hover:-translate-x-1 transition" />
+              Kembali
+            </button>
+
+            <div className="card-yellow shadow-xl p-6 md:p-8">
+              {/* Header */}
+              <div className="mb-8 text-center md:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal/10 text-teal text-xs font-semibold mb-3">
+                  <Zap size={12} />
+                  AI-Powered Analysis
+                </div>
+                <h1 className="text-2xl md:text-3xl font-bold text-text mb-2">
                   Deteksi Jerawat
                 </h1>
-
-                <p className="text-text-muted text-xs text-center mb-6">
-                  Pilih jenis kulit Anda, lalu klik deteksi
+                <p className="text-sm text-text-muted">
+                  Unggah foto wajah Anda untuk analisis AI yang akurat
                 </p>
+              </div>
 
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-text mb-2">
-                    Jenis Kulit
-                  </label>
+              {/* Upload Area */}
+              {!file ? (
+                <label className="block border-2 border-dashed border-teal/40 rounded-2xl p-12 text-center cursor-pointer hover:bg-teal/5 transition-all duration-300 group mb-8">
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
 
-                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                    {skinTypeOptions.map(({ label, Icon }) => {
-                      const active = skinType === label
-
-                      return (
-                        <button
-                          key={label}
-                          type="button"
-                          onClick={() => setSkinType(label)}
-                          className={`px-3 py-3 rounded-xl border text-xs font-medium flex flex-col items-center gap-2 transition ${
-                            active
-                              ? 'border-teal bg-teal-xlight text-teal-dark'
-                              : 'border-gray-200 bg-white text-text-muted hover:border-teal'
-                          }`}
-                        >
-                          <Icon />
-                          {label}
-                        </button>
-                      )
-                    })}
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-teal to-teal-dark text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <Upload size={32} />
                   </div>
 
-                  <p className="text-tiny text-text-muted mt-2">
-                    Pilih jenis kulit Anda untuk rekomendasi yang lebih akurat
+                  <p className="font-bold text-text mb-1 text-lg">
+                    Klik atau seret foto ke sini
                   </p>
+                  <p className="text-xs text-text-muted">
+                    JPG, PNG, WebP · Maks 5MB
+                  </p>
+                </label>
+              ) : (
+                <div className="mb-8">
+                  <ImagePreview file={file} onRemove={() => setFile(null)} />
+                </div>
+              )}
+
+              {/* Skin Type Selection */}
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-base font-bold text-text">
+                    Pilih Jenis Kulit
+                  </h2>
+                  {activeOption && (
+                    <span className="text-xs text-text-muted hidden sm:block">
+                      {activeOption.description}
+                    </span>
+                  )}
                 </div>
 
-                {file ? (
-                  <div className="space-y-4">
-                    <ImagePreview file={file} onRemove={() => setFile(null)} />
-                    <DetectButton onClick={handleDetect} disabled={!file} loading={loading} />
-                  </div>
-                ) : (
-                  <div className="text-center text-xs text-text-muted bg-white/70 rounded-xl p-4">
-                    Silakan kembali ke halaman utama dan upload foto wajah terlebih dahulu.
-                  </div>
-                )}
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                  {skinTypeOptions.map(({ label, Icon, iconBg, iconColor, borderColor, activeBg, description }) => {
+                    const active = skinType === label
+
+                    return (
+                      <button
+                        key={label}
+                        type="button"
+                        onClick={() => setSkinType(label)}
+                        className={`
+                          relative group rounded-xl p-4 text-center transition-all duration-200
+                          ${active 
+                            ? `${activeBg} border-2 ${borderColor} shadow-md scale-[1.02]` 
+                            : 'bg-white/50 border-2 border-transparent hover:border-teal/20 hover:shadow-md hover:scale-[1.01]'
+                          }
+                        `}
+                      >
+                        {/* Tooltip on hover */}
+                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap">
+                          <div className="bg-gray-800 text-white text-xs rounded-lg px-2 py-1">
+                            {description}
+                          </div>
+                        </div>
+
+                        <div className={`
+                          w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2 transition-all duration-200
+                          ${active ? iconBg : 'bg-gray-100 group-hover:bg-gray-200'}
+                        `}>
+                          <Icon size={24} className={active ? iconColor : 'text-gray-500'} />
+                        </div>
+
+                        <span className={`
+                          text-xs font-semibold transition-colors duration-200
+                          ${active ? iconColor.replace('text-', 'text-') : 'text-text-muted'}
+                        `}>
+                          {label}
+                        </span>
+
+                        {/* Active indicator dot */}
+                        {active && (
+                          <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-yellow ring-2 ring-white"></div>
+                        )}
+                      </button>
+                    )
+                  })}
+                </div>
+
+                {/* Mobile description */}
+                <div className="mt-3 text-center sm:hidden">
+                  <p className="text-xs text-text-muted bg-white/50 rounded-lg p-2">
+                    {activeOption?.description}
+                  </p>
+                </div>
               </div>
+
+              {/* Additional Info */}
+              <div className="mb-6 p-4 rounded-xl bg-teal/5 border border-teal/10">
+                <div className="flex items-start gap-3">
+                  <Shield size={18} className="text-teal mt-0.5" />
+                  <div>
+                    <p className="text-xs text-text-muted">
+                      <span className="font-semibold text-teal">Tips:</span> Gunakan foto dengan pencahayaan 
+                      yang baik dan wajah tanpa filter untuk hasil analisis yang lebih akurat.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Detect Button */}
+              <DetectButton
+                onClick={handleDetect}
+                disabled={!file}
+                loading={loading}
+              />
             </div>
           </div>
         </PageTransition>

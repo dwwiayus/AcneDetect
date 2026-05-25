@@ -23,18 +23,30 @@ const RegisterForm = () => {
     try {
       if (USE_MOCK) {
         await new Promise((r) => setTimeout(r, 800))
-        const user = { id: '1', name: data.name, email: data.email, token: 'mock-token' }
+
+        const user = {
+          id: '1',
+          name: data.name,
+          email: data.email,
+          token: 'mock-token',
+        }
+
         localStorage.setItem('token', user.token)
         localStorage.setItem('user', JSON.stringify(user))
         setUser(user)
+
         toast.success('Registrasi berhasil!')
         navigate('/')
         return
       }
+
       const { data: res } = await api.post('/api/auth/register', data)
+
       localStorage.setItem('token', res.token)
       localStorage.setItem('user', JSON.stringify(res.user))
+
       setUser({ ...res.user, token: res.token })
+
       toast.success('Registrasi berhasil!')
       navigate('/')
     } catch (err) {
@@ -44,14 +56,55 @@ const RegisterForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <InputField label="Nama Lengkap" name="name" placeholder="Nama Anda" register={register} error={errors.name} />
-      <InputField label="Email" name="email" placeholder="email@example.com" register={register} error={errors.email} />
-      <PasswordToggle label="Password" name="password" placeholder="Minimal 8 karakter" register={register} error={errors.password} />
-      <PasswordToggle label="Konfirmasi Password" name="confirmPassword" placeholder="Ulangi password" register={register} error={errors.confirmPassword} />
+      <InputField
+        label="Nama Lengkap"
+        name="name"
+        placeholder="Nama Anda"
+        register={register}
+        error={errors.name}
+      />
+
+      <InputField
+        label="Email"
+        name="email"
+        placeholder="email@example.com"
+        register={register}
+        error={errors.email}
+      />
+
+      <PasswordToggle
+        label="Password"
+        name="password"
+        placeholder="Minimal 8 karakter"
+        register={register}
+        error={errors.password}
+      />
+
+      <PasswordToggle
+        label="Konfirmasi Password"
+        name="confirmPassword"
+        placeholder="Ulangi password"
+        register={register}
+        error={errors.confirmPassword}
+      />
+
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full bg-teal text-white py-2.5 rounded-lg font-medium text-sm hover:bg-teal-dark hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 disabled:opacity-60"
+        className="
+          w-full
+          bg-[#2f7f79]
+          text-white
+          py-3
+          rounded-[11px]
+          font-bold
+          text-sm
+          hover:bg-[#276d68]
+          active:scale-95
+          transition-all
+          disabled:opacity-60
+          mt-2
+        "
       >
         {isSubmitting ? 'Memuat...' : 'Daftar'}
       </button>
@@ -60,4 +113,3 @@ const RegisterForm = () => {
 }
 
 export default RegisterForm
-
